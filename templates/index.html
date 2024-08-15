@@ -1,0 +1,37 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Sentiment Analysis Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>AI-Powered Sentiment Analysis Tool</h1>
+        <form id="sentiment-form">
+            <input type="text" id="text-input" placeholder="Enter text here..." required>
+            <input type="submit" value="Analyze Sentiment">
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+    <script>
+        document.getElementById('sentiment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const text = document.getElementById('text-input').value;
+            fetch('/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Sentiment: ' + data.sentiment;
+            });
+        });
+    </script>
+</body>
+</html>
